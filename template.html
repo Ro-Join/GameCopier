@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>User Webhook Page</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+            }
+            .container {
+                text-align: center;
+                background: #fff;
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+                width: 100%;
+                max-width: 600px;
+            }
+            textarea {
+                width: 80%;
+                padding: 10px;
+                margin-top: 10px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+            button {
+                margin-top: 10px;
+                padding: 10px 20px;
+                border: none;
+                border-radius: 4px;
+                background-color: #4caf50;
+                color: white;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Send a Message</h1>
+            <textarea
+                id="messageInput"
+                placeholder="Enter your message here"
+            ></textarea>
+            <button onclick="sendMessage()">Send Message</button>
+        </div>
+        <script>
+            const webhookURL = "<%= webhookURL %>"; // Placeholder to be replaced by server-side
+
+            function sendMessage() {
+                const message = document.getElementById("messageInput").value;
+                fetch(`/send`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        message: message,
+                        webhookURL: webhookURL,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        alert(data.status);
+                    })
+                    .catch((error) => {
+                        alert("Error: " + error);
+                    });
+            }
+        </script>
+    </body>
+</html>

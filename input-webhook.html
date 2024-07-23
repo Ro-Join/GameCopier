@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Webhook</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 600px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Input Your Webhook</h1>
+        <input type="text" id="webhookInput" placeholder="Enter your webhook URL here">
+        <button onclick="storeWebhook()">Submit</button>
+    </div>
+    <script>
+        function storeWebhook() {
+            const webhookURL = document.getElementById('webhookInput').value;
+            const username = 'user'; // Replace with actual username logic or dynamic value
+
+            fetch('/inputyourwebhook', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, webhookURL })
+            }).then(response => response.json())
+              .then(data => {
+                  console.log('Response from server:', data); // Debugging line
+                  if (data.status === 'Webhook URL stored successfully!') {
+                      console.log('Redirecting to:', `/${username}`); // Debugging line
+                      window.location.href = `/${username}`;
+                  } else {
+                      alert('Error storing webhook URL: ' + data.error);
+                  }
+              }).catch(error => {
+                  alert('Error: ' + error);
+              });
+        }
+    </script>
+</body>
+</html>
